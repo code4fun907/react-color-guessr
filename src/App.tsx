@@ -96,15 +96,9 @@ export const App: React.FC = () => {
         </div>
         <div className="flex gap-4">
           <div>
-            <ColorBox background={correctAns}>
+            <ColorBox background={correctAns} copyText={correctAns}>
               {selectedAns && (
-                <p
-                  className="text-white bg-black p-2 hover:cursor-copy"
-                  onClick={() => {
-                    navigator.clipboard.writeText(correctAns ? correctAns : "");
-                    alert("copied color " + correctAns);
-                  }}
-                >
+                <p className="text-white bg-black p-2 hover:cursor-copy">
                   {correctAns}
                 </p>
               )}
