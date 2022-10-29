@@ -44,6 +44,18 @@ export const App: React.FC = () => {
   return (
     <div className="grid h-screen place-items-center">
       <div>
+        <h1 className="text-xl mb-2 font-bold">
+          {[
+            "C text-red-400",
+            "O text-green-400",
+            "L text-indigo-400",
+            "O text-yellow-400",
+            "R text-blue-400",
+          ].map((color) => (
+            <span className={color.split(" ")[1]}>{color.split(" ")[0]}</span>
+          ))}{" "}
+          Guessr
+        </h1>
         <div className="p-2 bg-gray-200 w-auto rounded-md mb-2">
           correct <span className="bg-gray-300 p-1 rounded-xl">{wins}</span> |
           wrong <span className="bg-gray-300 p-1 rounded-xl">{loss}</span>
@@ -52,7 +64,15 @@ export const App: React.FC = () => {
           <div>
             <ColorBox background={correctAns}>
               {selectedAns && (
-                <p className="text-white bg-black p-2">{correctAns}</p>
+                <p
+                  className="text-white bg-black p-2 hover:cursor-copy"
+                  onClick={() => {
+                    navigator.clipboard.writeText(correctAns ? correctAns : "");
+                    alert("copied color " + correctAns);
+                  }}
+                >
+                  {correctAns}
+                </p>
               )}
             </ColorBox>
             <div className="flex flex-col gap-2 mt-2">
