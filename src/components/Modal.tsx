@@ -27,12 +27,17 @@ export const Modal: React.FC<IModalProps> = ({
 
   return (
     <Portal wrapperId="portal-modal-container">
-      <div className="fixed inset-0 opacity-90 flex flex-col items-center justify-center overflow-hidden z-[999] p-10">
-        <button onClick={handleClose}>Close</button>
-        <div className="w-3/4 h-3/4 flex items-center justify-center">
-          {children}
+      <>
+        <div
+          className="bg-black w-screen h-screen absolute top-0 bottom-0 right-0 left-0 opacity-20 pointer-events-auto"
+          onClick={handleClose}
+        ></div>
+        <div className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden z-[999] p-10 pointer-events-none">
+          <div className="w-1/3 h-1/5 flex items-center justify-center bg-white rounded-lg px-10">
+            {children}
+          </div>
         </div>
-      </div>
+      </>
     </Portal>
   );
 };
