@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 import { ColorBox } from "./components/ColorBox";
+import { useForceUpdate } from "./hooks/useForceUpdate";
+import {
+  getStoredLoss,
+  getStoredWins,
+  resetStoredLoss,
+  resetStoredWins,
+  setStoredLoss,
+  setStoredWins,
+} from "./localStorage";
 import { generateRandomHexColor, pickRandomFromArray } from "./utils";
 
 export const App: React.FC = () => {
@@ -20,13 +29,27 @@ export const App: React.FC = () => {
   const chooseCorrect = () =>
     setCorrectAns(pickRandomFromArray(allAns ? allAns : []));
 
+  const restoreWinLossData = () => {
+    const storedWins = getStoredWins();
+    const storedLoss = getStoredLoss();
+
+    if (storedWins) setWinsLoss((old) => [storedWins, old[1]]);
+    if (storedLoss) setWinsLoss((old) => [old[0], storedLoss]);
+  };
+
   useEffect(() => {
+    restoreWinLossData();
     resetGame();
   }, []);
 
   useEffect(() => {
     chooseCorrect();
   }, [allAns]);
+
+  useEffect(() => {
+    setStoredWins(wins);
+    setStoredLoss(loss);
+  }, [wins, loss]);
 
   const incrementWin = () => setWinsLoss((old) => [old[0] + 1, old[1]]);
   const incrementLoss = () => setWinsLoss((old) => [old[0], old[1] + 1]);
@@ -56,9 +79,21 @@ export const App: React.FC = () => {
           ))}{" "}
           Guessr
         </h1>
-        <div className="p-2 bg-gray-200 w-auto rounded-md mb-2">
-          correct <span className="bg-gray-300 p-1 rounded-xl">{wins}</span> |
-          wrong <span className="bg-gray-300 p-1 rounded-xl">{loss}</span>
+        <div className="py-2 px-4 bg-gray-200 w-auto rounded-md mb-2 flex items-center justify-between">
+          <div>
+            correct <span className="bg-gray-300 p-1 rounded-xl">{wins}</span> |
+            wrong <span className="bg-gray-300 p-1 rounded-xl">{loss}</span>
+          </div>
+          <button
+            className="bg-green-400 px-2 py-1 rounded-md hover:bg-green-600"
+            onClick={() => {
+              resetStoredWins();
+              resetStoredLoss();
+              window.location.reload();
+            }}
+          >
+            reset
+          </button>
         </div>
         <div className="flex gap-4">
           <div>
