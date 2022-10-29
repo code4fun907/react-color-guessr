@@ -1,4 +1,5 @@
 import { MouseEventHandler, useEffect } from "react";
+import { Portal } from "./Portal";
 
 export interface IModalProps {
   children: JSX.Element;
@@ -25,11 +26,13 @@ export const Modal: React.FC<IModalProps> = ({
   }, [handleClose]);
 
   return (
-    <div className="fixed inset-0 opacity-90 flex flex-col items-center justify-center overflow-hidden z-[999] p-10">
-      <button onClick={handleClose}>Close</button>
-      <div className="w-3/4 h-3/4 flex items-center justify-center">
-        {children}
+    <Portal wrapperId="portal-modal-container">
+      <div className="fixed inset-0 opacity-90 flex flex-col items-center justify-center overflow-hidden z-[999] p-10">
+        <button onClick={handleClose}>Close</button>
+        <div className="w-3/4 h-3/4 flex items-center justify-center">
+          {children}
+        </div>
       </div>
-    </div>
+    </Portal>
   );
 };
