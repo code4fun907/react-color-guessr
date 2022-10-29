@@ -1,3 +1,4 @@
+import { useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 export interface IPortalProps {
@@ -13,11 +14,29 @@ const createWrapperAndAppendToBody = (wrapperId: string) => {
 };
 
 export const Portal: React.FC<IPortalProps> = ({ children, wrapperId }) => {
-  let elem = document.getElementById(wrapperId);
+  const [wrapperElement, setWrapperElement] = useState<HTMLElement>();
 
-  if (!elem) {
-    elem = createWrapperAndAppendToBody(wrapperId);
-  }
+  // utilizing LayoutEffect because of direct DOM manipulation
+  useLayoutEffect(() => {
+    let elem = document.getElementById(wrapperId);
+    let systemCreated = false;
 
-  return createPortal(children, elem);
+    if (!elem) {
+      systemCreated = true;
+      elem = createWrapperAndAppendToBody(wrapperId);
+    }
+
+    setWrapperElement(elem);
+
+    // cleanup DOM when Portal is unmounted
+    return () => {
+      if (systemCreated && elem?.parentNode) {
+        elem.parentNode.removeChild(elem);
+      }
+    };
+  }, [wrapperId]);
+
+  if (!wrapperElement) return null;
+
+  return createPortal(children, wrapperElement);
 };
