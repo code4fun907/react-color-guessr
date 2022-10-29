@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ColorBox } from "./components/ColorBox";
-import { useForceUpdate } from "./hooks/useForceUpdate";
 import {
   getStoredLoss,
   getStoredWins,
