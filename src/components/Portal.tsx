@@ -5,13 +5,19 @@ export interface IPortalProps {
   children: JSX.Element;
 }
 
-export const Portal: React.FC<IPortalProps> = ({ children, wrapperId }) => {
-  const elem = document.getElementById(wrapperId);
+const createWrapperAndAppendToBody = (wrapperId: string) => {
+  const wrapperElement = document.createElement("div");
+  wrapperElement.setAttribute("id", wrapperId);
+  document.body.appendChild(wrapperElement);
+  return wrapperElement;
+};
 
-  if (elem) {
-    return createPortal(children, elem);
-  } else {
-    // probally should handle this better somehow?
-    return <h1>ERROR</h1>;
+export const Portal: React.FC<IPortalProps> = ({ children, wrapperId }) => {
+  let elem = document.getElementById(wrapperId);
+
+  if (!elem) {
+    elem = createWrapperAndAppendToBody(wrapperId);
   }
+
+  return createPortal(children, elem);
 };
