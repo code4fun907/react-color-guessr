@@ -10,7 +10,7 @@ export const ColorBox: React.FC<IColorBoxProps> = ({
   copyText,
 }) => (
   <div
-    className="w-56 h-56 flex justify-center items-center border-2 rounded-lg hover:cursor-copy"
+    className="w-56 h-56 xl:w-80 xl:h-80 flex justify-center items-center border-2 rounded-lg hover:cursor-copy"
     style={{ background }}
     onClick={() => {
       navigator.clipboard.writeText(copyText ? copyText : "");

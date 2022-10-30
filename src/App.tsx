@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ColorBox } from "./components/ColorBox";
-import { Modal } from "./components/Modal";
+import { Logo } from "./components/Logo";
+import { WelcomeModal } from "./components/WelcomeModal";
 import {
   getStoredLoss,
   getStoredWins,
@@ -65,43 +66,18 @@ export const App: React.FC = () => {
     }
   };
 
-  const renderLogo = () => (
-    <h1 className="text-xl mb-2 font-bold">
-      {[
-        "C text-red-400",
-        "O text-green-400",
-        "L text-indigo-400",
-        "O text-yellow-400",
-        "R text-blue-400",
-      ].map((color) => (
-        <span className={color.split(" ")[1]}>{color.split(" ")[0]}</span>
-      ))}{" "}
-      Guessr
-    </h1>
-  );
-
   return (
     <div className="grid h-screen place-items-center">
-      <Modal isOpen={modalOpen} handleClose={() => setModalOpen(false)}>
-        <div>
-          {renderLogo()}
-          <p className="mb-2 mt-2">
-            This is color guessr, a game where you will be shown random hex
-            codes accompinied by a random color and your goal is to match the
-            hex code to the shown color and get the higest score possible
-          </p>
-          <hr />
-          <p className="mb-2 mt-2">
-            if you have been here before your score will be persisted!
-          </p>
-          <strong>Click anywhere to begin.... enjoy!</strong>
-        </div>
-      </Modal>
+      <WelcomeModal
+        isOpen={modalOpen}
+        onRequestClose={() => setModalOpen(false)}
+      />
       <div>
-        {renderLogo()}
+        <Logo />
         <div className="py-2 px-4 bg-gray-200 w-auto rounded-md mb-2 flex items-center justify-between">
           <div>
-            correct <span className="bg-gray-300 p-1 rounded-xl">{wins}</span> |
+            correct{" "}
+            <span className="bg-gray-300 p-1 rounded-xl text-">{wins}</span> |
             wrong <span className="bg-gray-300 p-1 rounded-xl">{loss}</span>
           </div>
           <button
